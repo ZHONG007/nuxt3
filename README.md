@@ -13,7 +13,7 @@ everything works fine
     <img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" alt="Open In Stackblitz">
   </a>
 </p>
-
+    // "start": "cross-env PORT=8080 node .output/server/index.mjs"
 We recommend to look at the [documentation](https://v3.nuxtjs.org).
 
 ## Example
