@@ -11,5 +11,6 @@ RUN yarn build
 # production stage
 FROM node:lts-alpine as production-stage
 COPY --from=build-stage /app/.output/ /app/.output
+EXPOSE 3000 
 USER node
-CMD [ "yarn", "start" ]
+ENTRYPOINT ["node", ".output/server/index.mjs"]
