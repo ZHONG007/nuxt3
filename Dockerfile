@@ -3,42 +3,31 @@
 # ================
 FROM node:18-alpine as base
 
-WORKDIR /app
+# create destination directory
+RUN mkdir -p /usr/src/nuxt-app
+WORKDIR /usr/src/nuxt-app
 
-COPY package.json yarn.lock* ./
+# update and install dependency
+RUN apk update && apk upgrade
+RUN apk add git
 
-# =============
-# == BUILDER ==
-# =============
-FROM base as builder
+# copy the app, note .dockerignore
+COPY . /usr/src/nuxt-app/
+RUN yarn install
 
-# Install all depencies to build
-RUN yarn install --production=false
-
-COPY . /app/
-
+# build necessary, even if no static files are needed,
+# since it builds the server as well
 RUN yarn build
 
-# ======================
-# == PRODUCTION STAGE ==
-# ======================
-FROM base as production
+# expose 5000 on container
+EXPOSE 8080
 
-ENV NODE_ENV=production
+# set app serving to permissive / assigned
+ENV NUXT_HOST=0.0.0.0
+# set app port
+ENV NUXT_PORT=8080
 
-# Install pm2 to run app in production:
-RUN npm install pm2 -g
-
-# Add pm2 configuration:
-COPY --chown=node:node ./ecosystem.config.js /app/
-
-# Install only production packages
-RUN yarn --frozen-lockfile --production
-
-# To have lightest as possible, take only built files:
-COPY --from=builder --chown=node:node /app/.output/ /app/.output
-
-# Change user to "node" to improve security in production:
-USER node
-
+# start the app
 CMD [ "yarn", "start" ]
+
+

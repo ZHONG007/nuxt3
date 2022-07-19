@@ -4,7 +4,7 @@
     "dev": "nuxi dev",
     "build": "nuxi build",
     "pre": "yarn build && yarn start",
-    "start": "pm2-runtime ecosystem.config.js"
+    "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
     "naive-ui": "^2.31.0",
