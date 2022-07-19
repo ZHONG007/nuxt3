@@ -14,10 +14,12 @@ RUN apk add git
 # copy the app, note .dockerignore
 COPY . /usr/src/nuxt-app/
 RUN yarn install
+RUN yarn build
 
+FROM node:18-alpine
 # build necessary, even if no static files are needed,
 # since it builds the server as well
-RUN yarn build
+COPY --from=base /usr/src/nuxt-app/.output /.output
 
 # expose 5000 on container
 EXPOSE 8080
