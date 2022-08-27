@@ -1,11 +1,7 @@
 <template>
-  <n-config-provider>
-    <nuxt-layout>
-      <nuxt-page> </nuxt-page>
-    </nuxt-layout>
-  </n-config-provider>
+  <nuxt-layout>
+    <nuxt-page> </nuxt-page>
+  </nuxt-layout>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>

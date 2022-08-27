@@ -1,101 +1,161 @@
 <template>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav gap-1">
-                    <li class="nav-item" v-for="(item, index) in menus" :key="index">
-                        <a  :class="[isMenuItemActive(item) ? ['btn-primary','btn'] : ['btn-light','btn','btn-outline-secondary']]" role="button"
-                            @click="changePage(item.path)">{{ item.name }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
+  <div >
+    <header class="py-2">
+      <div class="row flex-nowrap justify-content-between align-items-center">
+        <div class="col-4 pt-1">
+          <a class="link-secondary" href="#">Subscribe</a>
         </div>
-    </nav>
-    
-    <nav class="navbar">
-        <!-- Navbar content -->
-        <div class="navbar-nav me-auto mb-2 mb-lg-0">
-            <a class="navbar-brand" href="/">
-                Bootstrap
-            </a>
-            <div>
-                <ul class="nav gap-1 ">
-                    <li class="nav-item" v-for="(item, index) in menus" :key="index">
-                        <a class="btn btn-outline-primary" :class="{ 'active': (isMenuItemActive(item)) }" role="button"
-                            @click="changePage(item.path)">{{ item.name }}</a>
-                    </li>
-                </ul>
-            </div>
-
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-
+        <div class="col-4 text-center">
+          <a class="blog-header-logo text-dark" href="#">Blog World</a>
         </div>
-    </nav>
+        <div class="col-4 d-flex justify-content-end align-items-center">
+          <a class="link-secondary" href="#" aria-label="Search">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              class="mx-3"
+              role="img"
+              viewBox="0 0 24 24"
+            >
+              <title>Search</title>
+              <circle cx="10.5" cy="10.5" r="7.5" />
+              <path d="M21 21l-5.2-5.2" />
+            </svg>
+          </a>
+          <a class="btn btn-sm btn-outline-secondary" href="#">Sign up</a>
+        </div>
+      </div>
+    </header>
+    <div class="nav-scroller py-1 mb-2">
+      <nav class="nav d-flex justify-content-between">
+        <template class="nav-item" v-for="(item, index) in menus" :key="index">
+          <a
+            :class="[
+              isMenuItemActive(item)
+                ? ['p-1', 'btn-outline-secondary','btn', 'active']
+                : ['p-1', 'btn'],
+            ]"
+            role="button"
+            @click="changePage(item.path)"
+            >{{ item.name }}</a
+          >
+        </template>
+      </nav>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 const route = useRoute();
 const menus = [
-    {
-        name: 'home',
-        path: '/',
-    },
-    {
-        name: 'exame',
-        path: '/exame/1',
-        match: [{
-            name: 'exame-page',
-        }]
-    }
-]
+  {
+    name: "World",
+    path: "/",
+  },
+  {
+    name: 'Editor',
+    path: "/editor"
+  },
+  {
+    name: "US",
+    path: "/exame/1",
+    match: [
+      {
+        name: "exame-page",
+      },
+    ],
+  },
+  {
+    name: "Opinion",
+    path: "/exame/2",
+  },
+  {
+    name: "Politics",
+    path: "/exame/5",
+  },
+  {
+    name: "Design",
+    path: "/exame/6",
+  },
+  {
+    name: "Culture",
+    path: "/exame/7",
+  },
+];
 
 // this function is used to judge the page is sub-page
 const isMenuItemActive = (item) => {
-    if (item.match) {
-        let i = item.match.findIndex(o => {
-            return o.name == route.name
-        }
-        )
-        return i != -1
+  if (item.match) {
+    let i = item.match.findIndex((o) => {
+      return o.name == route.name;
+    });
+    return i != -1;
+  }
+  return route.path == item.path;
+};
+
+async function addCompany(data) {
+  console.log("fetch");
+  await $fetch(
+    "https://molten-smithy-209720-default-rtdb.firebaseio.com/blogs.json",
+    {
+      method: "POST",
+      body: data,
     }
-    return route.path == item.path
+  );
 }
 
+// addCompany({
+//   title: "first blog",
+//   content: "this is first blog",
+// });
+
 function changePage(path: string) {
-    console.log('this is good world')
-    navigateTo(path);
+  console.log("this is good world");
+  navigateTo(path);
+}
+let dataDisplay = shallowRef(null);
+async function getInfo() {
+  const { data: count } = await useFetch(
+    "https://molten-smithy-209720-default-rtdb.firebaseio.com/blogs.json",
+    { key: "indexdata", server: true }
+  );
+
+  console.log(count.value);
+
+  // console.log(count.value["-NAQu0extzHR-LqtpB-L"].content);
+  // const array = Object.keys(count.value).map(function (key) {
+  //   return count.value[key];
+  // });
+
+  console.log(count);
+  const obj2 = toRaw(count.value);
+  console.log(obj2);
+  dataDisplay.value = count.value;
+  // console.log(unref(count))
+  console.log(count);
 }
 </script>
+
+<style>
+.blog-header {
+  line-height: 1;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.blog-header-logo {
+  font-family: "Playfair Display", Georgia, "Times New Roman",
+    serif /*rtl:Amiri, Georgia, "Times New Roman", serif*/;
+  font-size: 2.25rem;
+}
+
+.blog-header-logo:hover {
+  text-decoration: none;
+}
+</style>
